@@ -18,11 +18,16 @@ grad = zeros(size(theta));
 %               derivatives of the cost w.r.t. each parameter in theta
 htheta = sigmoid(X * theta);
 
-costsum = sum( -y .* log(htheta) - (1 - y) .* log(1 - htheta));
-regularization = (lambda / (2 * m)) * sum([0; theta(2:end)]);
-J = costsum / m + regularization;
+theta(1) = 0;
+cost = ((-y)' * log(htheta) - (1 - y)' * log(1 - htheta)) / m;
+regularization = (lambda / (2 * m)) * (theta' * theta);
+J = cost + regularization;
 
-grad = ((X' * (htheta - y)) + (lambda* [0; theta(2:end)])) / m;
+%old stuff why didnt this work formula wrong?
+%J = (1/m) * sum( -y .* log(htheta) - (1 - y) .* log(1 - htheta)) + (lambda / (2 * m)) * sum(theta);
+%regularization = (lambda / (2 * m)) * sum(theta);
+%J = costsum / m + regularization;
+
+grad = ((X' * (htheta - y)) + (lambda * theta)) / m;
 % =============================================================
-
 end
